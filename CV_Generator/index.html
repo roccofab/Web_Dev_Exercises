@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8"> 
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Online CV Generator</title> 
+    <link rel="stylesheet" href="./assets/style.css">
+    <script type="module" src="./js/CVBuilder.js"></script>
+</head>
+
+<body>
+    <main>
+        <div id="container">
+            <h1>CV Generator</h1>
+            <section id="name-sur"> 
+                <h2>Personal Information:</h2>
+                <label for="name">Name:</label>
+                <input type="text" id="name">
+                <span id="name-error" style="color: red; font-size: 14px; display: none;">Invalid name</span>
+                <label for="surname">Surname:</label>
+                <input type="text" id="surname">
+                <span id="surname-error" style="color: red; font-size: 14px; display: none;">Invalid surname</span>
+                <label for="age">Age:</label>
+                <input type="date" id="age">
+                <span id="age-error" style="color: red; font-size: 14px; display: none;">Birth date must be in the past and you must be at least 16 years old</span>
+                <label for="image">Image:</label>
+                <input type="file" id="image" accept="image/*">
+
+            </section>
+            <section id="contact_inf">
+                <h2>Contact Information:</h2>
+                <label for="email">Email:</label>
+                <input type="email" id="email">
+                <span id="email-error" style="color: red; font-size: 14px; display: none;">Invalid email address</span>
+                <label for="phone">Phone Number:</label>
+                <input type="tel" id="phone">
+                <span id="phone-error" style="color: red; font-size: 14px; display: none;">Invalid phone number (7-15 digits)</span>
+            </section>
+            <section id="education">
+                <h2>Education:</h2>
+                <label for="school_ed">Educational Attaintment</label>
+                <select name="education_level" id="school_ed">
+                    <option value="">-- Seleziona un'opzione --</option>
+                    <option value="primary">Primary School</option>
+                    <option value="secondary">Secondary</option>
+                    <option value="High">High School</option>
+                    <option value="Univ">University/College</option>
+                    <option value="master">Master's Degree</option>
+                    <option value="cert">Certification</option>
+                </select>
+                <label for="school_name">School Name/Certification Name:</label>
+                <input type="text" id="school_name">
+                <span id="education-error" style="color: red; font-size: 14px; display: none;">Invalid education field</span>
+                <button type="button" id="add-btn-ed">Add</button>
+                <ul id="ed-list" style="list-style:none; padding:0;"></ul>
+            </section>
+            <section id="work_exp">
+                <h2>Work Experience:</h2>
+                <label for="company_name">Company Name:</label>
+                <input type="text" id="company_name">
+                <label for="role">Role/Position:</label>
+                <input type="text" id="role">
+                <label for="duration">Duration (e.g., Jan 2020 - Dec 2021):</label>
+                <input type="text" id="duration">
+                <span id="experience-error" style="color: red; font-size: 14px; display: none;">Invalid experience field</span>
+                <button type="button" id="add-btn-exp">Add</button>
+                <ul id="experience-list" style="list-style: none; padding: 0;"></ul>
+            </section>
+            <section id="skills">
+                <h2>Skills:</h2>
+                <label for="skill">Technical Skill:</label>
+                <input type="text" id="skill">
+                <span id="skill-error" style="color: red; font-size: 14px; display: none;">Skill must be 2-50 characters</span>
+                <button type="button" id="add-btn-skill">Add</button>
+                <ul id="skills-list" style="list-style: none; padding: 0;"></ul>
+            </section>
+            <section id="lang">
+                <h2>Languages:</h2>
+                <label for="languages">Language:</label>
+                <input type="text" id="languages">
+                <span id="language-error" style="color: red; font-size: 14px; display: none;">Language must be 2-50 characters</span>
+                <button type="button" id="add-btn-lang">Add</button>
+                <ul id="languages-list" style="list-style: none; padding: 0;"></ul>
+            </section>
+            <button id="generate-cv">Generate CV</button>
+        </div>
+        <div id="generate_cv"></div>
+    </main>
+</body>
+
+</html>

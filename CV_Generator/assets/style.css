@@ -1,0 +1,80 @@
+main{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    font-family: Arial, Helvetica, sans-serif;
+    font-size: 18px;
+    margin: 20px;
+}
+.container{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}
+section {
+    font-size: 20px;
+    display: flex;
+    flex-direction: column;
+    margin-bottom: 10px;
+    border: 2px solid black;
+    max-width: 100%;
+    width: 400px;
+    height: auto;
+    padding: 5px;
+
+}
+.label{
+    font-weight: bold;
+    margin-bottom: 10px;
+}
+input, select {
+    padding: 8px;
+    margin-bottom: 10px;    /* Spazio tra la fine di un campo e l'inizio della label successiva */
+    border: 1px solid #ccc;
+    border-radius: 4px;
+}
+
+button{
+    margin: 10px 0;
+    padding: 8px;
+    background-color: #4CAF50; /* Verde per distinguerlo dal tasto finale */
+    color: white;
+    border: none;
+    cursor: pointer;
+    border-radius: 4px;
+    font-weight: bold;
+}
+button:hover {
+    background-color: #45a049; /* Colore leggermente più scuro al passaggio del mouse */
+    cursor:pointer;
+}
+
+/* cv-list-item dynamic list */
+.cv-list-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 6px;
+    padding: 6px;
+    border-bottom: 1px solid #ccc;
+}
+
+.cv-item-text {
+    flex: 1;
+}
+
+/* DELETE BUTTON */
+.delete-btn {
+    background: none;
+    border: none;
+    cursor: pointer;
+    font-size: 16px;
+}
+
+.delete-btn:hover {
+    transform: scale(1.1);
+    background-color: red;
+}
+
