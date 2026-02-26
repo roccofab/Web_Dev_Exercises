@@ -7,20 +7,26 @@
     "test": "test"
   },
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "jest",
+    "pdf": "node convertToPdf.js",
+    "server": "node server.js"
   },
   "keywords": [],
   "author": "",
   "license": "ISC",
   "type": "commonjs",
+  "dependencies": {
+    "puppeteer": "^21.0.0",
+    "express": "^4.18.2"
+  },
   "devDependencies": {
     "jest": "^30.2.0",
     "jest-environment-jsdom": "^30.2.0"
   },
-  "scripts": {
-  "test": "jest"
-  },
   "jest": {
-  "testEnvironment": "jsdom"
+    "testEnvironment": "jsdom"
+  },
+  "dependencies": {
+    "puppeteer": "^24.37.2"
   }
 }

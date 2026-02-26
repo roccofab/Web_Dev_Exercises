@@ -1,3 +1,8 @@
+/**
+ * Validate name and surname input text fields by using a simple regex that allows you
+ *      to validate names of up to 19 characters in any language.
+ * @returns {boolean}
+ */
 function validatePersonalInfo() {
     const name = document.getElementById("name").value;
     const surname = document.getElementById("surname").value;
@@ -27,6 +32,11 @@ function validatePersonalInfo() {
     return true;
 }
 
+/**
+ * Validate input type email and input type tel fields by using emailRegex and phoneRegex,
+ *     phoneregex allows you to validate phone numbers from any country
+ * @returns {boolean}
+ */
 function validateContactInfo() {
     const email = document.getElementById("email").value;
     const phone = document.getElementById("phone").value;
@@ -55,12 +65,19 @@ function validateContactInfo() {
     return true;
 }
 
+/**
+ * Validate  the optional field input type date(age).
+ * 
+ * Function calculate the difference between current date and input date:
+ *      if age > 16  return true
+ *      else   return false
+ * @returns {boolean} 
+ */
 function validateBirthDate() {
     const birthDate = document.getElementById("age").value;
     const birthDateError = document.getElementById("age-error");
     
     if (birthDate === "") {
-        // Campo opzionale - non mostra errore
         birthDateError.style.display = "none";
         return true;
     }
@@ -95,6 +112,10 @@ function validateBirthDate() {
     return true;
 }
 
+/**
+ * Check if the select fields education level and school name are not empty
+ * @returns {boolean}
+ */
 function validateEducationField() {
     const edLevel = document.getElementById("school_ed").value;
     const schoolName = document.getElementById("school_name").value;
@@ -116,6 +137,10 @@ function validateEducationField() {
     return true;
 }
 
+/**
+ * Check if the work-experience fields are not empty
+ * @returns {boolean}
+ */
 function validateExperienceField() {
     const company = document.getElementById("company_name").value;
     const role = document.getElementById("role").value;
@@ -144,6 +169,10 @@ function validateExperienceField() {
     return true;
 }
 
+/**
+ * Check if the skill fields are not empty
+ * @returns {boolean}
+ */
 function validateSkillField() {
     const skill = document.getElementById("skill").value;
     const skillError = document.getElementById("skill-error");
@@ -158,6 +187,10 @@ function validateSkillField() {
     return true;
 }
 
+/**
+ * Check if the language fields are not empty
+ * @returns {boolean}
+ */
 function validateLanguageField() {
     const language = document.getElementById("languages").value;
     const langError = document.getElementById("language-error");

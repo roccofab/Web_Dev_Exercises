@@ -1,6 +1,7 @@
 import { initFormHandlers } from "./FormHandle.js";
 import { buildJson } from "./DataBuilder.js";
 import { validatePersonalInfo, validateContactInfo, validateBirthDate } from "./Validate.js";
+import { loadFormData, initCookieBanner } from "./Cookie.js";
 
 /**
  * Initializes the CV generation workflow.
@@ -258,6 +259,8 @@ async function saveCv(content) {
 }
 
 document.addEventListener("DOMContentLoaded", () => {
+    initCookieBanner();
+    loadFormData();
     initFormHandlers(); 
     buildData();
 });

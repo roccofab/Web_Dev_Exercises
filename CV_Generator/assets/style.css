@@ -31,7 +31,7 @@ section {
 }
 input, select {
     padding: 8px;
-    margin-bottom: 10px;    /* Spazio tra la fine di un campo e l'inizio della label successiva */
+    margin-bottom: 10px;    
     border: 1px solid #ccc;
     border-radius: 4px;
 }
@@ -39,7 +39,7 @@ input, select {
 button{
     margin: 10px 0;
     padding: 8px;
-    background-color: #4CAF50; /* Verde per distinguerlo dal tasto finale */
+    background-color: #4CAF50; 
     color: white;
     border: none;
     cursor: pointer;
@@ -47,7 +47,7 @@ button{
     font-weight: bold;
 }
 button:hover {
-    background-color: #45a049; /* Colore leggermente più scuro al passaggio del mouse */
+    background-color: #45a049; 
     cursor:pointer;
 }
 
@@ -78,3 +78,15 @@ button:hover {
     background-color: red;
 }
 
+/*Cookie Banner*/
+#cookie-banner {
+    display: none;
+    position:fixed;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    background: #333;
+    color:white;
+    padding: 10px;
+    text-align: center;
+}
