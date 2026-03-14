@@ -21,8 +21,8 @@ CV_Generator
 ├─ index.html   <-- Main Page
 │
 ├─ js      <-- Application Core Functionalities
-│  ├─ Cookie.js   <-- Persistent Cookie Generation-Loading 
-│  ├─ CvBuilder.js   <-- Dinamyc CV Builder-CV Storage-Preview**
+│  ├─ Cookie.js   <-- Persistent Cookie Generation-Loading-Storage 
+│  ├─ CvBuilder.js   <-- Dinamyc CV Builder-CV Storage-Preview
 │  ├─ DataBuilder.js    <-- JSON Object Builder
 │  ├─ FormHandle.js   <--Handle Data Entry/Listeners
 │  └─ Validate.js    <-- Validate Data

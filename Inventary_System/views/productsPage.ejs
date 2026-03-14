@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Products</title>
+    <link rel="stylesheet" href="/Main.css">
+</head>
+
+<body>
+    <div id="particles-js"></div>
+    <a href="/logout" class="back_login" title="Logout">
+        <img src="/img/back_login.png" alt="Logout" width="42" height="42"> 
+    </a>
+    <main>
+        <% if(user && user.role === 'ADMINISTRATOR') { %>
+            <aside class="users-list">
+                <h3>Users</h3>
+                <ul>
+                    <% users.forEach(u => { %>
+                        <li>
+                            <input type="checkbox" name="userIds" value="<%= u.id %>">
+                            <%= u.name %> - <%= u.role %>
+                        </li>
+                    <% }) %>
+                </ul>
+                <button onclick="location.href = '/addUser'" id="addUserBtn">Add User</button>
+                <button id="deleteUserBtn" onclick="deleteSelectedUser()">Delete User</button>
+            </aside>
+        <% } %>
+    </main>
+    <div id="container">
+        <div id="booksContainer">
+            <% if(user) { %>
+                <h2> Welcome <%= user.name %></h2>
+            <% } %>
+            <table id="tableBooks">
+                <thead>
+                    <th></th>
+                    <th>ID</th>
+                    <th>TITLE</th>
+                    <th>PRICE</th>
+                    <th>AUTHOR</th>
+                    <th>CATEGORY</th>
+                    <th>QTY</th>
+                    <th class="edit-column"></th>
+                </thead>
+                </thead>
+                <tbody>
+                    <% if (books && books.length> 0) { %>
+                        <% books.forEach(book=> { %>
+                            <tr id="row-<%= book.id %>">
+                                <td><input type="checkbox" name="bookIds" value="<%= book.id %>"
+                                        onclick="paintSelectedRow(this, '<%= book.id %>')"></td>
+                                <td>
+                                    <%= book.id %>
+                                </td>
+                                <td data-field="title">
+                                    <strong>
+                                        <%= book.title %>
+                                    </strong>
+                                </td>
+                                <td data-field="price">
+                                    <%= book.price.toFixed(2) %>
+                                </td>
+                                <td data-field="author">
+                                    <%= book.author %>
+                                </td>
+                                <td data-field="category">
+                                    <%= book.category %>
+                                </td>
+                                <td data-field="quantity">
+                                    <%= book.quantity %>
+                                </td>
+                                <td class="edit-column">
+                                    <button class="save-btn" data-id="<%= book.id %>">Save</button>
+                                </td>
+                            </tr>
+                            <% }); %>
+                                <% } else { %>
+                                    <tr>
+                                        <td colspan="5">Nessun Libro Disponibile</td>
+                                    </tr>
+                                    <% } %>
+                </tbody>
+            </table>
+            <div id="btnContainer">
+                <button id="addBtn" onclick="location.href = '/addProduct'">Add</button>
+                <button id="deleteBtn">Delete</button>
+                <button data-editing="false" id="updateBtn">Update</button>
+            </div>
+
+            <div id="customAlert" style="display:none; position:fixed; top:30%; left:50%; transform:translate(-50%, -50%);
+background:white; padding:20px; border:1px solid black;">
+                <h3>Choose One Product</h3>
+                <p id="alertMessage"></p>
+                <button onclick="closeAlert()">OK</button>
+            </div>
+        </div>
+    </div>
+
+    <script src="/js/particles.min.js"></script>
+
+    <script>
+        /* particlesJS.load(@dom-id, @path-json, @callback (optional)); */
+        particlesJS.load('particles-js', '/js/particlesjs-config.json', function () {
+            console.log('callback - particles.js config loaded');
+        });
+    </script>
+
+    <script src="/js/session.js"></script>
+
+    <script  type = "module" src="/js/script.js"></script>
+    <script>
+        saveCheckboxState();  // restore checkbox state on page reload
+        saveEditedValues();   // restore editing mode if page is reloaded during editing
+    </script>
+</body>
+
+</html>

@@ -1,0 +1,163 @@
+body{
+    margin:0;
+    background: rgba(255,255,255,0.85);
+    font-family: Arial, Helvetica, sans-serif;
+}
+
+
+main{
+    display:flex;
+    flex-direction:column;
+    align-items:center;
+    justify-content: center;
+    padding:20px;
+    width: 100%;
+    z-index:1;
+}
+
+/* USERS LIST */
+.users-list{
+    width:100%;
+    max-width:800px;
+    margin: 0 auto 20px auto;
+    background:white;
+    padding:25px;
+    margin-bottom:20px;
+    border-radius:8px;
+    box-shadow:0 4px 15px rgba(0,0,0,0.1);
+}
+
+.users-list h3{
+    margin-top:0;
+    text-transform:uppercase;
+}
+
+.users-list ul{
+    list-style:none;
+    padding:0;
+    margin:10px 0;
+}
+
+.users-list li{
+    padding:8px 0;
+    border-bottom:1px solid #ddd;
+}
+
+
+#container{
+    width:100%;
+    max-width:1400px;
+    margin:0 auto;   /* center the table */
+    background:white;
+    border-radius:8px;
+    box-shadow:0 4px 15px rgba(0,0,0,0.1);
+    z-index:1;
+}
+
+#booksContainer{
+    padding:20px;
+    text-align:center;
+}
+
+
+#tableBooks{
+    width:100%;
+    border-collapse:collapse;
+}
+
+table th{
+    background:#117cff;
+    color:white;
+    padding:12px;
+    border:1px solid #0056b3;
+}
+
+table td{
+    padding:10px;
+    border:1px solid #ddd;
+    text-align:right;
+}
+
+table tbody tr:hover{
+    background:rgba(17,124,255,0.05);
+}
+
+
+table td strong{
+    color:#ff1139dc;
+}
+
+
+#btnContainer{
+    display:flex;
+    justify-content:center;
+    gap:10px;
+    margin-top:20px;
+}
+
+button{
+    width:120px;
+    height:40px;
+    border:none;
+    border-radius:5px;
+    background:#1129ff;
+    color:white;
+    font-weight:bold;
+    cursor:pointer;
+}
+
+button:hover{
+    background:#1190ff;
+}
+
+
+.edit-column{
+    display:none;
+}
+
+/* LOGOUT ICON */
+.back_login{
+    position:absolute;
+    top:40px;
+    z-index:2;
+}
+
+.back_login:hover{
+    transform:scale(1.3);
+}
+
+/* PARTICLES BACKGROUND */
+#particles-js{
+    position:fixed;
+    top:0;
+    left:0;
+    width:100%;
+    height:100%;
+    z-index:-1;
+}
+
+/* MOBILE */
+@media (max-width:600px){
+
+    .users-list{
+        display:none;
+    }
+
+    #container{
+        width:95%;
+    }
+
+    /* scroll table */
+    #booksContainer{
+        overflow-x:auto;
+    }
+
+    #tableBooks{
+        min-width:600px;
+    }
+
+    .back_login{
+        top:20px;
+        right:20px;
+    }
+}

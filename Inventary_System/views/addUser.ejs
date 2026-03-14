@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Add New User</title>
+    <link rel="stylesheet" href="/add.css">
+</head>
+<body>
+    <div id="particles-js"></div>
+    <a href="/dbProducts" class="back_home" title="Homepage">
+            <img src="/img/back.png" alt="Home" width="32" height="32">
+    </a>
+
+    <div id = "container">
+        <form action="/register" method="POST">
+            <div class="form_group">
+                <label for="name">Name</label>
+                <input type="text" name="name" placeholder="Insert Name" required id="name">
+            </div>
+
+            <div class="form_group">
+                <label for="role">Role</label>
+                <select name="role" id="role" required>
+                    <option value="">Select Role</option>
+                    <option value="ADMINISTRATOR">Administrator</option>
+                    <option value="USER">User</option>
+                </select>
+            </div>
+
+            <div class="form_group">
+                <label for="username">Username</label>
+                <input type="text" name="username" placeholder="Insert Username" required id="username">
+            </div>
+
+            <div class="form_group">
+                <label for="password">Password</label>
+                <input type="password" name="password" placeholder="Insert Password" required id="password">
+            </div>
+
+            <div class="button_group">
+                <button type = "submit" id="addBtn">Add User</button>
+                <button id="clearBtn">Clear</button>
+            </div>
+        </form>
+    </div>
+    <script src="/js/particles.min.js"></script>
+    <script>
+        /* particlesJS.load(@dom-id, @path-json, @callback (optional)); */
+        particlesJS.load('particles-js', '/js/particlesjs-config.json', function () {
+            console.log('callback - particles.js config loaded');
+        });
+    </script>
+</body>
+</html>

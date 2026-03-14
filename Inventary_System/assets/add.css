@@ -1,0 +1,101 @@
+body, html {
+    height: 100%;
+    margin: 0;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    background: rgba(255, 255, 255, 0.85);
+}
+
+#container {
+    position: absolute; 
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%); /* center the container */
+    width: 90%;
+    max-width: 450px;
+    padding: 20px;
+    z-index: 1; /* Place the container over the animated background */
+    background: white;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+}
+
+.back_home {
+    position:absolute;
+    top: 20px;
+    left: 20px;
+    z-index: 2;
+    transition: transform 0.2s ease;
+}
+
+.back_home:hover {
+    transform: scale(2); /* Effect to double the icon size on mouseover */
+}
+
+.back_home img {
+    display: block;
+}
+
+.form_group {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start; /* Align label and input on the left */
+    width: 100%;   /*The form group takes up the entire width of the container(450px)*/
+    margin-bottom: 15px; 
+}
+
+.form_group label {
+    font-weight: bolder;
+    margin-bottom: 5px; 
+}
+
+.form_group input {
+    width: 100%; /* The input takes up the entire width of the form_group(450 px) */
+    padding: 8px;
+    box-sizing: border-box; /* includes padding in the form_group size */
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.026); 
+    border: 1px solid #ccc;
+    border-radius: 5px;
+}
+
+.button_group button{
+    height: 40px;
+    margin: 5px;
+    cursor: pointer;
+    background-color: #1129ff;
+    color: #ffffff;
+    font-weight: bold;
+    border-radius: 5px;
+    border: none;
+    padding: 10px 20px;
+    font-size: 1rem;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    transition: background-color 0.3s ease;
+}
+
+#particles-js {
+    position: fixed;
+    width: 100%;
+    height: 100%;
+    background-color: #f4f4f9; 
+    z-index: -1; /* place the animated background behind the container*/
+    top: 0;
+    left: 0;
+}
+
+@media screen and (max-width: 500px) {
+    .button_group {
+        display: flex;
+        /* if the screen width < 500px, the buttons align in a column*/
+        flex-direction: column; 
+        align-items: flex-start; /* place the buttons on the left side */
+        width: 100%;
+        max-width: 400px;
+    }
+
+    .button_group button {
+        width: auto; 
+        min-width: 120px; 
+        margin: 5px 0; 
+        box-sizing: border-box;  /*include buttons's margin */
+    }
+}
