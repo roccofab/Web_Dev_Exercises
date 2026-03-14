@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Add Product</title>
+    <link rel="stylesheet" href="/add.css">
+</head>
+<body>
+    <div id="particles-js"></div>
+
+    <a href="/dbProducts" class="back_home" title="Homepage">
+            <img src="/img/back.png" alt="Home" width="32" height="32">
+    </a>
+    <div id="container">
+        <form action="/add" method="POST">
+            <div class="form_group">
+                <label for="title">Title</label>
+                <input type="text" name="title" placeholder="Insert Title" required id="title">
+            </div>
+
+            <div class="form_group">
+                    <label for="price">Price</label>
+                    <input type="number" name="price" step="0.01" min="0" placeholder="0.00" id="price">
+            </div>
+
+            <div class="form_group">
+                <label for="author">Author</label>
+                <input type="text" name="author" id="author" placeholder="Insert Author(This field is optional)">
+            </div>
+
+            <div class="form_group">
+                <label for="category">Category</label>
+                <input type="text" name="category" id="category" placeholder="Insert Category(This field is optional)">
+
+            </div>
+
+            <div class="form_group">
+                <label for="quantity">Quantity</label>
+                <input type="number" name="quantity" id="quantity" placeholder="0" min="0">
+            </div>
+
+            <div class="button_group">
+                <button type = "submit" id="addBtn">Add</button>
+                <button id="clearBtn">Clear</button>
+            </div>
+        </form>
+    </div>
+
+    <script src="/js/particles.min.js"></script>
+    <script>
+         /* particlesJS.load(@dom-id, @path-json, @callback (optional)); */
+        particlesJS.load('particles-js', '/js/particlesjs-config.json', function() {
+            console.log('callback - particles.js config loaded');
+        });
+    </script>
+
+    <script>
+        const clearBtn = document.getElementById('clearBtn');
+
+        clearBtn.addEventListener('click', (event) => {
+            event.preventDefault();
+
+            const inputs = document.querySelectorAll('input');
+
+            inputs.forEach(input => {
+                input.value='';
+            });
+        });
+    </script>
+
+    <script src="/js/session.js"></script>
+    <script>
+        saveAddProdState();
+    </script>
+
+    <script src="/js/script.js"></script>
+    <script>
+        document.querySelector('form').addEventListener('submit', function(event) {
+            const priceInput = document.getElementById('price');
+            const priceValue = priceInput.value.trim();
+
+            const qtyInput = document.getElementById('quantity');
+
+
+            if (priceValue === '' || isNaN(priceValue) || parseFloat(priceValue) < 0) {
+                event.preventDefault(); // Prevent form submission
+                alert('Please enter a valid price (a non-negative number).');
+            }
+
+            if(qtyInput.value.trim() !== '' && (isNaN(qtyInput.value) || parseInt(qtyInput.value) < 0)){
+                event.preventDefault();
+                alert('Please enter a valid quantity (a non-negative integer).');
+            }
+        });
+    </script>
+</body>
+</html>
