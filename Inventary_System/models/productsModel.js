@@ -1,127 +1,145 @@
-const fs = require('fs').promises
-const path = require('path');
-const booksFile = path.join(__dirname, 'books.json')
+const db = require('./connection');
 
-async function getBooks(){
-    try {
-        const raw = await fs.readFile(booksFile, 'utf-8');
-        return JSON.parse(raw);
-    } catch (error) {
-        return []; 
-    }
-}
-
-async function addBook(title,price,author,category){
-    const books = await getBooks();
-    let newId = 1;
-
-    if (books.length > 0) {
-        // sort by id and get the last one
-        books.sort((a, b) => a.id - b.id);
-        newId = books[books.length - 1].id + 1;
-    }
-
-    const newBook = {id:newId,
-         title:title,
-         price:parseFloat(price) || 0,
-         author:author,
-         category:category
-        };  //crea nuovo libro
-    books.push(newBook);  //add a new book at the end of the array
-
-    await fs.writeFile(booksFile, JSON.stringify(books, null, 2));  //overwrite books.json
-} 
-
-async function deleteBooks(ids){
-    const data = await getBooks();
-
-    const numeric_ids = ids.map(id => Number(id));  //cast ids from string to number
-
-    let updatedBooks = [];  //This list contains books excluding those that match the specified ids.
-    for(let i = 0; i < data.length; i++){
-        const current = data[i];
-
-        if(numeric_ids.includes(current.id))
-            console.log(`Deleting Book:  ${current.title}`);
-        else
-            updatedBooks.push(current);
-    }
-
-    await fs.writeFile(booksFile, JSON.stringify(updatedBooks, null, 2));
-}
-
-async function updateBook(id, title, price, author,category, quantity){
-    const books = await getBooks();
-    const numericId = Number(id);  //cast id from string to number
-    const index = books.findIndex(b => b.id === numericId);
-
-    if(index != -1){
-        books[index] = {
-            id : numericId,
-            title : title,
-            price : parseFloat(price) || 0,
-            author : author,
-            category : category,
-            quantity: parseInt(quantity) || 0
-        };
-        await fs.writeFile(booksFile, JSON.stringify(books, null, 2));
-    }
+/**
+ * Get the products from the table books.
+ * @returns {Array<Object>}   Array of books object
+ */
+async function getBooks() {
+  const stmt = db.prepare(`
+    SELECT *
+    FROM books
+    ORDER BY id
+  `);
+  return stmt.all();
 }
 
 /**
- * Utility function to add the attribute quantity for each book, the value of quantity is a random number between 1 and 100
+ * Insert a new row in the database app_data.db, the quantity is first set to 0.
+ */
+async function addBook(title, price, author, category, quantity, section) {
+  const stmt = db.prepare(`
+    INSERT INTO books (title, price, author, category, quantity, section)
+    VALUES (?, ?, ?, ?, ?, ?)
+  `);
+  await stmt.run(title, parseFloat(price), author || '', category || '', parseInt(quantity, 10) || 0, section);
+}
+
+/**
+ * Delete a specific book identified by its id.
+ */
+async function deleteBooks(ids) {
+  const transaction = db.transaction((ids) => {
+    const stmt = db.prepare(`
+      DELETE FROM books
+      WHERE id = ?
+    `);
+
+    for (const id of ids) {
+      stmt.run(Number(id));
+    }
+  });
+
+  transaction(ids);
+}
+
+/**
+ * Update one or more fields of a specific row.
+ */
+async function updateBook(id, title, price, author, category, quantity, section) {
+  const stmt = db.prepare(`
+    UPDATE books
+    SET title = ?,
+        price = ?,
+        author = ?,
+        category = ?,
+        quantity = ?,
+        section = ?
+    WHERE id = ?
+  `);
+
+  await stmt.run(title, parseFloat(price), author, category, parseInt(quantity, 10) || 0, section || 'A', Number(id));
+}
+
+/**
+ * Utility function to add the attribute quantity for each book, the value of quantity is a random number between 1 and 100.
  */
 async function addRandomQty() {
-    const books = await getBooks();
-    try{
-        for(let i = 0; i < books.length; i++){
-            books[i].quantity = Math.floor(Math.random() * 100) + 1;  //generate a random quantity value between 1 and 100
-        }
+  const books = db.prepare('SELECT id FROM books').all();
 
-        await fs.writeFile(booksFile, JSON.stringify(books, null, 2));
-        console.log("Quantity added");
-    }catch(error){
-        console.error('error while adding quantity: ', error);
+  const transaction = db.transaction(() => {
+    const stmt = dbprepare(`
+      UPDATE books
+      SET quantity = ?
+      WHERE id = ?
+    `);
+
+    for (const book of books) {
+      const randomQty = Math.floor(Math.random() * 100) + 1;
+      stmt.run(randomQty, book.id);
     }
+  });
+
+  transaction();
 }
 
 /**
- * Routine to search a book in books.json by its id and updates the quantity field by appending the value
- *     num: if num is positive the quantity increase else the quantity decreases.
- * If the resulting quantity is 0 or negative the book is removed from the list by using splice function.
- * 
- * Frontend Flow:
- *     - User select a book, enter the quantity to remove and press delete.
- *     - The function updateQty update quantity field in books.json
- *     -The page is reloaded.
- *  
- * @param {Number} id 
- * @param {Number} num  -negative number that represent the decrement 
- * @returns 
+ * Update the quantity of a book, deleting it if the result is 0 or less.
  */
-async function updateQty(id, num){
-    const books = await getBooks();
-    const numericId = Number(id);
+async function updateQty(id, num) {
+  const book = await db.prepare(`
+    SELECT quantity
+    FROM books
+    WHERE id = ?
+  `).get(Number(id));
 
-    const index = books.findIndex(b => b.id === numericId);
+  if (!book) return;
 
-    if(index == -1)
-        return;
+  const newQty = book.quantity + num;
 
-    books[index].quantity += num;   //num must be negative
+  if (newQty <= 0) {
+    await db.prepare(`
+      DELETE FROM books
+      WHERE id = ?
+    `).run(Number(id));
+    return;
+  }
 
-    if(books[index].quantity <= 0){
-        books.splice(index, 1);
-    }
-
-    await fs.writeFile(booksFile, JSON.stringify(books, null, 2));
+  await db.prepare(`
+    UPDATE books
+    SET quantity = ?
+    WHERE id = ?
+  `).run(newQty, Number(id));
 }
 
-module.exports = { getBooks,
-     addBook,
-     deleteBooks,
-     updateBook,
-     addRandomQty,
-    updateQty 
+async function updateSection(id, newSection) {
+  const rangeSections = ['A', 'B', 'C', 'D', 'E', 'F'];
+  if (!rangeSections.includes(newSection)) {
+    throw new Error('Invalid section: must be A, B, C, D, E, F');
+  }
+
+  const book = await db.prepare(`
+    SELECT section
+    FROM books
+    WHERE id = ?
+  `).get(Number(id));
+
+  if (!book) return;
+
+  const stmt = db.prepare(`
+    UPDATE books
+    SET section = ?
+    WHERE id = ?
+  `);
+  await stmt.run(newSection, Number(id));
+}
+
+module.exports = {
+  getBooks,
+  addBook,
+  deleteBooks,
+  updateBook,
+  addRandomQty,
+  updateQty,
+  updateSection,
 };
 

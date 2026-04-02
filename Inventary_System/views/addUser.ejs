@@ -4,15 +4,15 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Add New User</title>
+    <link rel="stylesheet" href="/output.css">
     <link rel="stylesheet" href="/add.css">
 </head>
-<body>
-    <div id="particles-js"></div>
+<body class="bg-modern min-h-screen">
     <a href="/dbProducts" class="back_home" title="Homepage">
             <img src="/img/back.png" alt="Home" width="32" height="32">
     </a>
 
-    <div id = "container">
+    <div class = "modal-content">
         <form action="/register" method="POST">
             <div class="form_group">
                 <label for="name">Name</label>
@@ -36,20 +36,31 @@
             <div class="form_group">
                 <label for="password">Password</label>
                 <input type="password" name="password" placeholder="Insert Password" required id="password">
+                <div id="passwordRules" class="text-sm mt-2 space-y-1 hidden">
+                    <p id="rule-length" class="text-red-500">• At least 8 characters</p>
+                    <p id="rule-upper" class="text-red-500">• One uppercase letter</p>
+                    <p id="rule-lower" class="text-red-500">• One lowercase letter</p>
+                    <p id="rule-number" class="text-red-500">• One number</p>
+                    <p id="rule-special" class="text-red-500">• One special character</p>
+                </div>
             </div>
 
             <div class="button_group">
-                <button type = "submit" id="addBtn">Add User</button>
-                <button id="clearBtn">Clear</button>
+                <button type = "submit"
+                id="addBtn"
+                class="custom-btn bg-blue-500 hover:bg-blue-600 text-white px-4 py-2 rounded-lg transition">
+                Add User
+                </button>
+
+                <button type="reset"
+                 id="clearUserBtn"
+                 class="custom-btn bg-blue-500 hover:bg-blue-600 text-white px-4 py-2 rounded-lg transition">
+                 Clear
+                </button>
             </div>
         </form>
     </div>
-    <script src="/js/particles.min.js"></script>
-    <script>
-        /* particlesJS.load(@dom-id, @path-json, @callback (optional)); */
-        particlesJS.load('particles-js', '/js/particlesjs-config.json', function () {
-            console.log('callback - particles.js config loaded');
-        });
-    </script>
+
+    <script src="/js/user.js"></script>
 </body>
 </html>

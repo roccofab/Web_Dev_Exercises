@@ -3,57 +3,50 @@ const Database = require('better-sqlite3');
 const bcrypt = require('bcrypt');
 const path = require('path');
 
-
 /**
  * app_data.db database initialization script.
- * The script performs the following functions:
- *    - Use better-sqlite3 driver to comunicate with the sqlite3 database: better-sqlite3 is a library for synchronous
- *          interaction with sqlite3, it is faster than sqlite3 library that use an asynchronous model to comunicate with sqlite3 database.
- * 
- *    - Load DB_PATH from .env
- * 
- *    - Initialize data for a new admin user to log in to the system for the first time.
- * 
- *    - Hash password by using bcrypt algorithm, the password is hashed in 10 rounds.
- * 
- *    - Performs an atomic transaction on SQLite to ensure data integrity
- *          between the 'users' (profile) and 'credentials' (authentication) tables.
- *
- *@requires dotenv 
- *@requires better-sqlite3  - driver fron sinchronous interaction with the selite3 database
- *@requires bcrypt   -safe password hashing algorithm
+ * - Creates an admin user only if it does NOT already exist
+ * - Safe to run multiple times (idempotent)
  */
 
-const dbPath = process.env.DB_PATH;
-
+const dbPath = process.env.DB_PATH || path.join(__dirname, "../models/data/app_data.db");
 const db = new Database(dbPath);
 
 const admin = {
-    name : 'admin',
+    name: 'admin',
     role: 'ADMINISTRATOR',
     username: 'admin_test',
     password: 'admin.systemTest1'
 };
 
-const hash = bcrypt.hashSync(admin.password,10);
+// check if the user exists in the table
+const existingUser = db.prepare(`
+    SELECT * FROM credentials WHERE username = ?
+`).get(admin.username);
 
-const insertUser = db.prepare(`
-INSERT INTO users (name, role) VALUES (?, ?)
-`);
+if (existingUser) {
+    console.log("Admin already exists, skipping creation");
+} else {
+    console.log("🔧 Creating admin user...");
 
-const insertCred = db.prepare(`
-INSERT INTO credentials (id, username, password_digest)
-VALUES (?, ?, ?)
-`);
+    const hash = bcrypt.hashSync(admin.password, 10);
 
-const transaction = db.transaction(() => {
+    const insertUser = db.prepare(`
+        INSERT INTO users (name, role) VALUES (?, ?)
+    `);
 
-    const result = insertUser.run(admin.name, admin.role);
+    const insertCred = db.prepare(`
+        INSERT INTO credentials (id, username, password_digest)
+        VALUES (?, ?, ?)
+    `);
 
-    insertCred.run(result.lastInsertRowid, admin.username, hash);
+    const transaction = db.transaction(() => {
+        const result = insertUser.run(admin.name, admin.role);
 
-});
+        insertCred.run(result.lastInsertRowid, admin.username, hash);
+    });
 
-transaction();
+    transaction();
 
-console.log("Admin created");
+    console.log("Admin created successfully");
+}

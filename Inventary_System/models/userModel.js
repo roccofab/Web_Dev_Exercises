@@ -82,13 +82,9 @@ function createUserCredentials(name, role, username, password){
  * @returns 
  */
 function deleteUserCredentials(id) {
-    const stmt = db.prepare(`
-        DELETE FROM users
-        WHERE id = ?
-    `);
-
-    stmt.run(id);
-    return result.changes > 0;
+  const stmt = db.prepare(`DELETE FROM users WHERE id = ?`);
+  const result = stmt.run(id);
+  return result.changes > 0;
 }
 
 module.exports = {

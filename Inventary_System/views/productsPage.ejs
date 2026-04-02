@@ -5,113 +5,208 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Products</title>
+    <link rel="stylesheet" href="/output.css">
     <link rel="stylesheet" href="/Main.css">
+    <link rel="stylesheet" href="/add.css">
 </head>
 
-<body>
-    <div id="particles-js"></div>
-    <a href="/logout" class="back_login" title="Logout">
-        <img src="/img/back_login.png" alt="Logout" width="42" height="42"> 
-    </a>
-    <main>
-        <% if(user && user.role === 'ADMINISTRATOR') { %>
-            <aside class="users-list">
-                <h3>Users</h3>
-                <ul>
-                    <% users.forEach(u => { %>
-                        <li>
-                            <input type="checkbox" name="userIds" value="<%= u.id %>">
-                            <%= u.name %> - <%= u.role %>
-                        </li>
-                    <% }) %>
-                </ul>
-                <button onclick="location.href = '/addUser'" id="addUserBtn">Add User</button>
-                <button id="deleteUserBtn" onclick="deleteSelectedUser()">Delete User</button>
-            </aside>
-        <% } %>
-    </main>
-    <div id="container">
-        <div id="booksContainer">
-            <% if(user) { %>
-                <h2> Welcome <%= user.name %></h2>
-            <% } %>
-            <table id="tableBooks">
-                <thead>
-                    <th></th>
-                    <th>ID</th>
-                    <th>TITLE</th>
-                    <th>PRICE</th>
-                    <th>AUTHOR</th>
-                    <th>CATEGORY</th>
-                    <th>QTY</th>
-                    <th class="edit-column"></th>
-                </thead>
-                </thead>
-                <tbody>
-                    <% if (books && books.length> 0) { %>
-                        <% books.forEach(book=> { %>
-                            <tr id="row-<%= book.id %>">
-                                <td><input type="checkbox" name="bookIds" value="<%= book.id %>"
-                                        onclick="paintSelectedRow(this, '<%= book.id %>')"></td>
-                                <td>
-                                    <%= book.id %>
-                                </td>
-                                <td data-field="title">
-                                    <strong>
-                                        <%= book.title %>
-                                    </strong>
-                                </td>
-                                <td data-field="price">
-                                    <%= book.price.toFixed(2) %>
-                                </td>
-                                <td data-field="author">
-                                    <%= book.author %>
-                                </td>
-                                <td data-field="category">
-                                    <%= book.category %>
-                                </td>
-                                <td data-field="quantity">
-                                    <%= book.quantity %>
-                                </td>
-                                <td class="edit-column">
-                                    <button class="save-btn" data-id="<%= book.id %>">Save</button>
-                                </td>
-                            </tr>
-                            <% }); %>
-                                <% } else { %>
-                                    <tr>
-                                        <td colspan="5">Nessun Libro Disponibile</td>
-                                    </tr>
-                                    <% } %>
-                </tbody>
-            </table>
-            <div id="btnContainer">
-                <button id="addBtn" onclick="location.href = '/addProduct'">Add</button>
-                <button id="deleteBtn">Delete</button>
-                <button data-editing="false" id="updateBtn">Update</button>
-            </div>
+<body class="bg-modern min-h-screen">
+    <div class="absolute top-4 right-4 flex gap-3">
 
-            <div id="customAlert" style="display:none; position:fixed; top:30%; left:50%; transform:translate(-50%, -50%);
-background:white; padding:20px; border:1px solid black;">
-                <h3>Choose One Product</h3>
-                <p id="alertMessage"></p>
-                <button onclick="closeAlert()">OK</button>
+        <!-- Users icon -->
+        <button onclick="openUsersModal()" class="bg-white shadow-md p-2 rounded-full hover:bg-gray-100">
+            <img src="/img/group.png" width="42" alt="employees icon" title="Employees List" id="users_group">
+        </button>
+
+        <!-- Logout -->
+        <a href="/logout" class="bg-white shadow-md p-2 rounded-full hover:bg-gray-100">
+            <img src="/img/back_login.png" width="42" alt="logout icon" title="Logout" id="back_login">
+        </a>
+
+    </div>
+    <main>
+        <% if(user && user.role==='ADMINISTRATOR' ) { %>
+            <div id="usersModal" class="fixed inset-0 bg-black bg-opacity-40 hidden items-center justify-center">
+
+                <div class="bg-white rounded-xl shadow-lg p-6 w-96">
+
+                    <div class="flex justify-between items-center mb-4">
+                        <h2 class="text-lg font-semibold">Users</h2>
+                        <button onclick="closeUsersModal()">✖</button>
+                    </div>
+
+                    <ul class="space-y-2 max-h-60 overflow-y-auto">
+                        <% users.forEach(u=> { %>
+                            <li class="flex items-center gap-2 border-b pb-1">
+                                <input type="checkbox" name="userIds" value="<%= u.id %>">
+                                <span>
+                                    <%= u.name %> - <%= u.role %>
+                                </span>
+                            </li>
+                            <% }) %>
+                    </ul>
+
+                    <div class="flex gap-2 mt-4">
+                        <button onclick="location.href='/addUser'"
+                            class="bg-blue-500 text-white px-3 py-2 rounded-lg hover:bg-blue-600">
+                            Add
+                        </button>
+
+                        <button onclick="deleteSelectedUser()"
+                            class="bg-red-500 text-white px-3 py-2 rounded-lg hover:bg-red-600">
+                            Delete
+                        </button>
+                    </div>
+                </div>
             </div>
+            <% } %>
+    </main>
+    <div id="container" class="min-h-screen flex flex-col items-center p-6">
+        <div id="booksContainer" class="w-full p-4 md:p-8 overflow-x-auto">
+            <% if(user) { %>
+                <h2 class="absolute top-4 left-1/2 -translate-x-1/2 text-3xl font-bold text-gray-800">
+                    Welcome <%= user.name %>
+                </h2>
+                <% } %>
+                    <div class="flex gap-6 mb-4">
+                        <input type="text"
+                         placeholder="Search..."
+                         class="input input-bordered w-80 h-9 border-gray-400 focus:border-blue-500 focus:outline-none text-base shadow-lg"
+                         id="searchInput" 
+                        />
+                        <button class="btn btn-primary font-semibold" id = "searchBtn">
+                         Search
+                        </button>
+                    </div>
+                    <table id="tableBooks" class="w-full border-collapse bg-white text-sm md:text-base">
+                        <thead class="bg-gray-200">
+                            <th class="p-3 border border-gray-300 text-left font-bold"></th>
+                            <th class="p-3 border border-gray-300 text-left font-bold">ID</th>
+                            <th class="p-3 border border-gray-300 text-left font-bold">TITLE</th>
+                            <th class="p-3 border border-gray-300 text-left font-bold">PRICE</th>
+                            <th class="p-3 border border-gray-300 text-left font-bold">AUTHOR</th>
+                            <th class="p-3 border border-gray-300 text-left font-bold">CATEGORY</th>
+                            <th class="p-3 border border-gray-300 text-left font-bold">QTY</th>
+
+                            <th class="p-3 border border-gray-300 text-left font-bold">
+                                <select id="sectionFilter" class="border rounded p-1">
+                                    <option value="">All</option>
+                                    <% ['A','B','C','D','E','F'].forEach(s=> { %>
+                                        <option value="<%= s %>">
+                                            <%= s %>
+                                        </option>
+                                        <% }) %>
+                                </select>
+                            </th>
+
+                            <th class="edit-column p-3 border border-gray-300 font-bold"></th>
+                        </thead>
+                        </thead>
+                        <tbody class="divide-y divide-gray-200">
+                            <% if (books && books.length> 0) { %>
+                                <% books.forEach(book=> { %>
+                                    <tr id="row-<%= book.id %>" class="hover:bg-blue-50 transition-colors">
+                                        <td class="p-3 border-b border-gray-200">
+                                            <input type="checkbox" name="bookIds" value="<%= book.id %>"
+                                                onclick="paintSelectedRow(this, '<%= book.id %>')">
+                                        </td>
+
+                                        <td id="bookId" class="p-3 border-b border-gray-200 font-bold text-left">
+                                            <%= book.id %>
+                                        </td>
+
+                                        <td data-field="title" class="p-3 border-b border-gray-200 text-left">
+                                            <%= book.title %>
+                                        </td>
+                                        <td data-field="price" class="p-3 border-b border-gray-200 text-left">
+                                            <%= book.price.toFixed(2) %>
+                                        </td>
+                                        <td data-field="author" class="p-3 border-b border-gray-200 text-left">
+                                            <%= book.author %>
+                                        </td>
+                                        <td data-field="category" class="p-3 border-b border-gray-200 text-left">
+                                            <%= book.category %>
+                                        </td>
+                                        <td data-field="quantity" class="p-3 border-b border-gray-200 text-left">
+                                            <%= book.quantity %>
+                                        </td>
+                                        <td data-field="section" class="p-3 border-b border-gray-200 text-left">
+                                            <%= book.section || 'A' %>
+                                        </td>
+                                        <td class="edit-column p-3 border-b border-gray-200">
+                                            <button
+                                                class="save-btn bg-blue-500 hover:bg-blue-600 text-white px-4 py-2 rounded-lg transition"
+                                                data-id="<%= book.id %>">
+                                                Save
+                                            </button>
+                                        </td>
+                                    </tr>
+                                    <% }); %>
+                                        <% } else { %>
+                                            <tr>
+                                                <td colspan="9" class="p-10 text-center text-gray-500 italic">No Book
+                                                    Available</td>
+                                            </tr>
+                                            <% } %>
+                        </tbody>
+                    </table>
+                    <div id="btnContainer">
+                        <button type="button" id="addBtn"
+                            class="custom-btn bg-blue-500 hover:bg-blue-600 text-white px-4 py-2 rounded-lg transition"
+                            onclick="openAddModal()">
+                            Add
+                        </button>
+
+                        <button id="deleteBtn"
+                            class="custom-btn bg-blue-500 hover:bg-blue-600 text-white px-4 py-2 rounded-lg transition">
+                            Delete
+                        </button>
+
+                        <button data-editing="false" id="updateBtn"
+                            class="custom-btn bg-blue-500 hover:bg-blue-600 text-white px-4 py-2 rounded-lg transition">
+                            Update
+                        </button>
+                    </div>
+
+                    <div id="customAlert" class="modal">
+                        <div class="modal-content">
+                            <span class="closeX" id="closeAlertX" onclick="closeCustomAlert()">&times;</span>
+
+                            <h3 id="alertTitle">Choose One Product</h3>
+
+                            <p id="alertMessage"></p>
+
+                            <div class="modalBtnContainer">
+                                <button id="alertConfirmBtn"
+                                    class="bg-blue-500 hover:bg-blue-600 text-white px-4 py-2 rounded-lg transition">OK</button>
+                                <button id="alertCancelBtn"
+                                    class="cancel-btn bg-gray-500 hover:bg-gray-600 text-white px-4 py-2 rounded-lg transition"
+                                    style="display: none;">Cancel</button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div id="deleteModal">
+                        <div class="modal-content">
+                            <span onclick="closeDeleteModal()" class="closeX">&times;</span>
+                            <h3>Remove Quantity</h3>
+                            <p>Quantity to Remove:</p>
+                            <input id="qtyInpModal" type="number" placeholder="enter quantity" min="1">
+
+                            <div class="modalBtnContainer">
+                                <button id="confirmDeleteBtn"
+                                    class="bg-red-500 hover:bg-red-600 text-white px-4 py-2 rounded-lg transition">Delete</button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div id="addModal" class="modal"></div>
         </div>
     </div>
 
-    <script src="/js/particles.min.js"></script>
-
-    <script>
-        /* particlesJS.load(@dom-id, @path-json, @callback (optional)); */
-        particlesJS.load('particles-js', '/js/particlesjs-config.json', function () {
-            console.log('callback - particles.js config loaded');
-        });
-    </script>
-
     <script src="/js/session.js"></script>
 
-    <script  type = "module" src="/js/script.js"></script>
+    <script src="/js/script.js"></script>
     <script>
         saveCheckboxState();  // restore checkbox state on page reload
         saveEditedValues();   // restore editing mode if page is reloaded during editing

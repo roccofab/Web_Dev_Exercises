@@ -17,7 +17,6 @@
  *    so that when the user refreshes the page or comes back to the page later, the state of the checkboxes is restored.
  */
 function saveCheckboxState() {
-    document.addEventListener("DOMContentLoaded", () => {
         const checkboxes = document.querySelectorAll('input[name="bookIds"]');
         const key = "selectedBooks";
 
@@ -41,8 +40,6 @@ function saveCheckboxState() {
                 sessionStorage.setItem(key, JSON.stringify(selected));
             });
         });
-
-    });
 }
 
 /**
@@ -58,7 +55,6 @@ function saveEditingMode(isEditing) {
 }
 
 function saveEditedValues(){
-    document.addEventListener("DOMContentLoaded", () => {
         const isEditing = sessionStorage.getItem("editingMode");
 
         if(isEditing === "true") {
@@ -72,11 +68,14 @@ function saveEditedValues(){
                 enableEditingRows(); // restore the editing mode
             }
         }
-    });
 }
 
+/**
+ * This function is used to save the state of the add product form in the session storage,
+ *     so that when the user refreshes the page or comes back to the page later, the state of the add product form is restored.
+ * 
+ */
 function saveAddProdState() {
-    document.addEventListener("DOMContentLoaded", () => {
         const form = document.querySelector('form');
         const key = "addProdForm";
         const savedState = sessionStorage.getItem(key);
@@ -114,13 +113,5 @@ function saveAddProdState() {
         form.addEventListener("submit", () => {
             sessionStorage.removeItem(key);
         });
-
-    });
 }
 
-module.exports = {
-    saveCheckboxState,
-    saveEditingMode,
-    saveEditedValues,
-    saveAddProdState
-}

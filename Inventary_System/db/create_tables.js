@@ -27,7 +27,8 @@ CREATE TABLE IF NOT EXISTS books(
     price REAL NOT NULL,
     author TEXT,
     category TEXT,
-    quantity INTEGER DEFAULT 0
+    quantity INTEGER DEFAULT 0,
+    section TEXT CHECK(section IN ('A','B','C','D','E','F'))
 );
 
 CREATE INDEX IF NOT EXISTS idx_username ON credentials(username);

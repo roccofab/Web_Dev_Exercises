@@ -1,0 +1,8 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+@layer utilities {
+  .bg-modern {
+    background: linear-gradient(135deg, #eef2ff, #e0e7ff, #f1f5f9);
+  }
+}

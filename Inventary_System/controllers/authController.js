@@ -3,8 +3,25 @@ const bcrypt = require('bcrypt');
 const saltRounds = 10;
 
 /**
+ * Validates the password against a set of rules.
+ * @param {String} password - The password to validate.
+ * @returns {String|null} - The error message if the password is invalid, or null if it's valid.
+ */
+function validatePassword(password) {
+    const minLen = 8;
+    if (typeof password !== 'string' || password.length < minLen) return "Password must contains at least 8 characters";
+    if (!/[A-Z]/.test(password)) return "Password must contains at least one uppercase character";
+    if (!/[a-z]/.test(password)) return "Password must contains at least one lowercase character";
+    if (!/[0-9]/.test(password)) return "Password must contains at least one number";
+    if (!/[!@#$%^&*()_+\-=[\]{};':"\\|,.<>/?]/.test(password)) return "Password must contains at least one special character";
+    return null;
+}
+
+/**
  * Handles user login by verifying the provided username and password against the stored credentials in the database.
+ * 
  * If the credentials are valid, it creates a session for the user and redirects them to the dbProducts page.
+ * 
  * If the credentials are invalid, it renders the login page with an error message.
  * @param {*} req 
  * @param {*} res 
@@ -13,7 +30,7 @@ const saltRounds = 10;
 async function login(req,res){
     const { username, password } = req.body;
     try{
-        const user = userModel.getUserByUsername(username);
+        const user = await userModel.getUserByUsername(username);
         if(user){
             const passwordMatch = await bcrypt.compare(password, user.password_digest);
             if(passwordMatch){
@@ -30,17 +47,22 @@ async function login(req,res){
 
 /**
  * Handles user registration by creating a new user in the database with the provided name, role, username, and password.
+ * 
  * The password is hashed using bcrypt before being stored in the database.
+ * 
  * If the registration is successful, it redirects the user to the dbProducts page. 
+ * 
  * If there is an error during registration, it logs the error and responds with a 500 status code and an error message.
  * @param {*} req 
  * @param {*} res 
  */
 async function registerUser(req,res){
     const { name, role, username, password } = req.body;
+    const pwdErr = validatePassword(password);
+    if (pwdErr) return res.status(400).render('addUser', { error: pwdErr });
     try{
         const passwordDigest = await bcrypt.hash(password, saltRounds);
-        userModel.createUserCredentials(name, role, username, passwordDigest);
+        await userModel.createUserCredentials(name, role, username, passwordDigest);
         res.redirect('/dbProducts');
     }catch(err){
         console.error("Error while registering user:", err);
@@ -50,7 +72,9 @@ async function registerUser(req,res){
 
 /**
  *  Middleware function to check if the user is authenticated before allowing access to protected routes.
- *  If the user is authenticated, the function calls next() to proceed to the next route handler. 
+ * 
+ *  If the user is authenticated, the function calls next() to proceed to the next route handler.
+ *  
  *  If the user is not authenticated, it redirects them to the login page.
  * @param {*} req  
  * @param {*} res 
@@ -67,13 +91,14 @@ function isAuthenticated(req, res, next) {
 
 /**
  * function to delete user(s) from the database based on the provided user ID from the request body.
+ * 
  * The function checks if the userIds parameter is valid and then iterates through the array of user
  *     IDs to delete each user using the userModel.deleteUser method.
  * @param {*} req 
  * @param {*} res 
  * @returns 
  */
-function deleteUser(req, res) {
+async function deleteUser(req, res) {
     const { userIds } = req.body;
 
     if (!userIds || !Array.isArray(userIds)) {
@@ -82,7 +107,7 @@ function deleteUser(req, res) {
 
     try{
         for(const id of userIds){
-            userModel.deleteUserCredentials(id);
+            await userModel.deleteUserCredentials(id);
         }
         res.status(200).json({ message: "Users deleted successfully" });
     }catch(err){

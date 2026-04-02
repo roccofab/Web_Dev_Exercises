@@ -1,98 +1,59 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Add Product</title>
-    <link rel="stylesheet" href="/add.css">
-</head>
-<body>
-    <div id="particles-js"></div>
+<div class="modal-content">
 
-    <a href="/dbProducts" class="back_home" title="Homepage">
-            <img src="/img/back.png" alt="Home" width="32" height="32">
-    </a>
-    <div id="container">
-        <form action="/add" method="POST">
-            <div class="form_group">
-                <label for="title">Title</label>
-                <input type="text" name="title" placeholder="Insert Title" required id="title">
-            </div>
+    <span class="closeX" onclick="closeAddModal()">&times;</span>
 
-            <div class="form_group">
-                    <label for="price">Price</label>
-                    <input type="number" name="price" step="0.01" min="0" placeholder="0.00" id="price">
-            </div>
+    <h3>Add Product</h3>
 
-            <div class="form_group">
-                <label for="author">Author</label>
-                <input type="text" name="author" id="author" placeholder="Insert Author(This field is optional)">
-            </div>
+    <form id="addProductForm" action="/add" method="POST">
 
-            <div class="form_group">
-                <label for="category">Category</label>
-                <input type="text" name="category" id="category" placeholder="Insert Category(This field is optional)">
+        <div class="form_group">
+            <label for="title">Title</label>
+            <input type="text" name="title" placeholder="Insert Title" required id="title">
+        </div>
 
-            </div>
+        <div class="form_group">
+            <label for="price">Price</label>
+            <input type="number" name="price" step="0.01" min="0" placeholder="0.00" id="price">
+        </div>
 
-            <div class="form_group">
-                <label for="quantity">Quantity</label>
-                <input type="number" name="quantity" id="quantity" placeholder="0" min="0">
-            </div>
+        <div class="form_group">
+            <label for="author">Author</label>
+            <input type="text" name="author" id="author" placeholder="Optional">
+        </div>
 
-            <div class="button_group">
-                <button type = "submit" id="addBtn">Add</button>
-                <button id="clearBtn">Clear</button>
-            </div>
-        </form>
-    </div>
+        <div class="form_group">
+            <label for="category">Category</label>
+            <input type="text" name="category" id="category" placeholder="Optional">
+        </div>
 
-    <script src="/js/particles.min.js"></script>
-    <script>
-         /* particlesJS.load(@dom-id, @path-json, @callback (optional)); */
-        particlesJS.load('particles-js', '/js/particlesjs-config.json', function() {
-            console.log('callback - particles.js config loaded');
-        });
-    </script>
+        <div class="form_group">
+            <label for="quantity">Quantity</label>
+            <input type="number" name="quantity" id="quantity" placeholder="0" min="0">
+        </div>
 
-    <script>
-        const clearBtn = document.getElementById('clearBtn');
+        <div class="form_group">
+            <label for="section">Section</label>
+            <select name="section" id="section" required>
+                <option value="A">A</option>
+                <option value="B">B</option>
+                <option value="C">C</option>
+                <option value="D">D</option>
+                <option value="E">E</option>
+                <option value="F">F</option>
+            </select>
+        </div>
 
-        clearBtn.addEventListener('click', (event) => {
-            event.preventDefault();
+        <div class="modalBtnContainer">
+            <button type="submit"
+                class="custom-btn bg-blue-500 hover:bg-blue-600 text-white px-4 py-2 rounded-lg transition">
+                Add
+            </button>
 
-            const inputs = document.querySelectorAll('input');
+            <button type="button" id="clearProdBtn"
+                class="custom-btn bg-blue-500 hover:bg-blue-600 text-white px-4 py-2 rounded-lg transition">
+                Clear
+            </button>
+        </div>
 
-            inputs.forEach(input => {
-                input.value='';
-            });
-        });
-    </script>
-
-    <script src="/js/session.js"></script>
-    <script>
-        saveAddProdState();
-    </script>
-
-    <script src="/js/script.js"></script>
-    <script>
-        document.querySelector('form').addEventListener('submit', function(event) {
-            const priceInput = document.getElementById('price');
-            const priceValue = priceInput.value.trim();
-
-            const qtyInput = document.getElementById('quantity');
-
-
-            if (priceValue === '' || isNaN(priceValue) || parseFloat(priceValue) < 0) {
-                event.preventDefault(); // Prevent form submission
-                alert('Please enter a valid price (a non-negative number).');
-            }
-
-            if(qtyInput.value.trim() !== '' && (isNaN(qtyInput.value) || parseInt(qtyInput.value) < 0)){
-                event.preventDefault();
-                alert('Please enter a valid quantity (a non-negative integer).');
-            }
-        });
-    </script>
-</body>
-</html>
+    </form>
+</div>

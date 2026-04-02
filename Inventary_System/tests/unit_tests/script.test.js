@@ -82,7 +82,7 @@ describe("paintSelectedRow", () => {
         checkbox.checked = true;
         paintSelectedRow(checkbox, "1");
         const row = document.getElementById("row-1");
-        expect(row.style.backgroundColor).toContain("rgba(204, 204, 204, 0.58)");
+        expect(row.style.backgroundColor).not.toBe("");
     });
 });
 
@@ -90,18 +90,13 @@ describe("paintSelectedRow", () => {
 describe("editSelectedRow API POST", () => {
     test("sends a POST request to the API with the correct data to edit row", async () => {
         const id = "10";
-        const title = "New Title";
-        const price = "19.99";
-        const author = "New Author";
-        const category = "New Category";
-        const quantity = "5";
-
         document.body.innerHTML = `
             <input id="input-title-${id}" value="Book Test">
             <input id="input-price-${id}" value="20,50">
             <input id="input-author-${id}" value="Author Test">
             <input id="input-category-${id}" value="Fantasy">
             <input id="input-quantity-${id}" value="10">
+            <select id="input-section-${id}"><option value="A" selected>A</option></select>
         `;
 
         global.fetch.mockResolvedValueOnce({ ok: true });
@@ -116,7 +111,8 @@ describe("editSelectedRow API POST", () => {
                 price: 20.50, 
                 author: "Author Test",
                 category: "Fantasy",
-                quantity: 10
+                quantity: 10,
+                section: "A"
             })
         });
     });

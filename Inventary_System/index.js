@@ -60,6 +60,6 @@ app.post('/updateQty', authCtrl.isAuthenticated, controller.updateQty);  //handl
 app.post('/register', authCtrl.isAuthenticated, authCtrl.registerUser);  //handle the form submission for user registration and render the registration page with a success message or an error message
 app.post('/deleteUser', authCtrl.isAuthenticated, authCtrl.deleteUser); //handle the form submission for deleting user/users
 
-app.listen(PORT, () => {
+app.listen(PORT,'0.0.0.0', () => {
     console.log(`Server is running on port ${PORT} at url: http://localhost:${PORT}/login`);
 });
