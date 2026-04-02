@@ -1,5 +1,10 @@
 #  Inventary Management System Full-Stack Web Application
 ### Inventary System is a web app for managing product/book inventary with session authentication, catalog CRUD, a secure login system, user management, and a basic RBAC (Role-Based Access Control) system. Core stack: Node.js + Express + EJS + SQLite (better-sqlite3), UI with TailwindCSS + DaisyUI, JavaScript logical client (fetch/AJAX), and UI state persistence via sessionStorage. NB: the system was designed for books inventary management, but its functions can easily be extended for an inventary system of generic products.
+
+
+https://github.com/user-attachments/assets/d87b274c-bbb7-4c97-9ec0-237f77156f0a
+
+
 ## Enviroment and Requirements:
 
 ### Functionalities:
