@@ -1,0 +1,52 @@
+#weeklyCards {
+    display: flex;
+    overflow-x: auto; 
+    scroll-behavior: smooth;
+    white-space: nowrap;
+    -ms-overflow-style: none;  
+    scrollbar-width: none;  
+}
+
+#weeklyCards::-webkit-scrollbar {
+    display: none;
+}
+
+.hourlyCard {
+    display: inline-block;
+    width: 200px;
+    height: 150px;
+    margin: 10px;
+    background-color: #f0f0f0;
+    border-radius: 5px;
+    text-align: center;
+    padding: 10px;
+}
+
+.w-full.max-w-4xl.relative {
+    position: relative; 
+}
+
+.slider-arrow {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 40px;
+    height: 40px;
+    opacity: 0.7;
+    cursor: pointer;
+    z-index: 50; 
+    transition: all 0.3s ease;
+}
+
+.slider-arrow.left {
+    left: 0; 
+}
+
+.slider-arrow.right {
+    right: 0; 
+}
+
+.slider-arrow:hover {
+    opacity: 1;
+    transform: translateY(-50%) scale(1.1);
+}
