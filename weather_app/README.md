@@ -1,6 +1,8 @@
 # Open Web Meteo
 ## Web application for displaying daily weather forecasts and current weather conditions. Data is fetched from the open-meteo API.
 
+## https://weather-app-vlec.onrender.com
+
 ## Functionalities
 - **Search Bar:** Search bar for city search, only cities can be searched, not countries or regions
 
@@ -13,6 +15,7 @@
 
 - **API:** open-meteo API
 
+- **Deploy:** render
 ## Repo Structure
 ```
 weather_app
