@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Github Profile Finder</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300&display=swap"
+        rel="stylesheet">
+    <link rel="stylesheet" href="dist/css/bootstrap.min.css">
+</head>
+
+<body>
+    <div id="container">
+        <h1>Github Profile Finder</h1>
+        <div class="search-container shadow-sm">
+            <div class="input-group">
+                <input type="text" class="form-control" id="usernameInput" placeholder="Enter Github Username"
+                    aria-label="Recipient’s username" aria-describedby="button-addon2">
+                <button class="btn btn-outline-secondary" type="button" id="button-addon2">Search</button>
+            </div>
+        </div>
+
+        <div id="loadingSpinner" class="text-center d-none">
+            <div class="spinner-border" role="status">
+                <span class="visually-hidden">Loading...</span>
+            </div>
+        </div>
+
+        <div id="profile" class="profile_card"></div>
+    </div>
+    <script src="script.js"></script>
+</body>
+
+</html>

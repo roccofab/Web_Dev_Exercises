@@ -1,0 +1,110 @@
+#container{
+    font-family: 'Poppins', sans-serif;
+    text-align: center;
+    padding: 20px;
+}
+.search-container {
+    background-color: white;
+    border: 1px solid #ddd;
+    border-radius: 50px; /* ultra rounding */
+    padding: 4px;        
+    display: flex;
+    align-items: center;
+    max-width: 500px;    
+    margin: 100px auto;      /* center the search bar */
+}
+
+
+.input-group .form-control {
+    border: none;
+    box-shadow: none !important;
+    background: transparent;
+}
+
+.input-group usernameInput{
+    font-size: 1rem;
+    outline: none;
+    transition: all 0.3s ease;
+}
+
+/* Removes the blue shadow when the input is clicked */
+.input-group .form-control:focus {
+    box-shadow: none;
+    background-color: transparent;
+}
+
+
+#button-addon2{
+    cursor: pointer;
+    background-color: #007bff;
+    color: #ffffff;
+    font-weight: bolder;
+    border-radius: 50px;
+    border: none;
+    padding: 10px 20px;
+    font-size: 1rem;
+    transition: background-color 0.3s ease;
+}
+
+.profile_card {
+  display: none;
+  border: 1px solid black;
+  background: #fff;
+  padding: 30px;
+  border: none; 
+  border-radius: 20px;
+  max-width: 400px;   /*Reduce length*/
+  margin: 20px auto 100px auto;   /*center the card*/
+  /* deep shadow */
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.08); 
+  text-align: center;
+  transition: transform 0.3s ease;
+}
+
+.profile_card img {
+    width: 150px;
+    height: 150px;
+    border-radius: 50%;
+    border: 4px solid #f8f9fa;
+    margin-bottom: 15px;
+}
+
+.profile_card h2 {
+    font-weight: 600;
+    color: #333;
+    margin-bottom: 5px;
+}
+
+.profile_card p {
+    color: #666;
+    font-size: 0.9rem;
+}
+
+.profile-stats {
+    display: flex;
+    justify-content: space-around;
+    margin: 20px 0;
+    padding: 15px 0;
+    border-top: 1px solid #eee;
+    border-bottom: 1px solid #eee;
+}
+
+.stat p {
+    margin: 0;
+    font-weight: bold;
+    color: #007bff;
+}
+
+.profile_card a {
+    display: inline-block;
+    background-color: #007bff;
+    color: white;
+    text-decoration: none;
+    padding: 10px 20px;
+    border-radius: 50px;
+    font-weight: 500;
+}
+
+.profile_card a:hover {
+    background-color: #0056b3;
+}
