@@ -1,0 +1,119 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id                  Int           @id @default(autoincrement())
+  name                String
+  email               String        @unique
+  password            String
+  role                userRole
+  doctor              Doctor?
+  patient             Patient?
+  createdAppointments Appointment[] @relation("AppointmentCreatedBy")
+
+  @@map("User")
+}
+
+model Doctor {
+  id             Int           @id @default(autoincrement())
+  specialization String
+  userId         Int           @unique
+  user           User          @relation(fields: [userId], references: [id], onDelete: Cascade)
+  appointments   Appointment[]
+  details        Details[]
+
+  @@map("Doctor")
+}
+
+model Patient {
+  id           Int           @id @default(autoincrement())
+  name         String
+  fiscalCode   String?       @unique
+  userId       Int?          @unique
+  user         User?         @relation(fields: [userId], references: [id], onDelete: Cascade)
+  appointments Appointment[]
+
+  @@map("Patient")
+}
+
+model Appointment {
+  id          Int               @id @default(autoincrement())
+  description String
+  createdById Int
+  doctorId    Int?
+  patientId   Int
+  date        DateTime          @db.Date
+  start_time  DateTime          @db.Time(0)
+  end_time    DateTime          @db.Time(0)
+  status      appointmentStatus @default(SCHEDULED)
+  createdBy   User              @relation("AppointmentCreatedBy", fields: [createdById], references: [id], onDelete: Restrict)
+  doctor      Doctor?           @relation(fields: [doctorId], references: [id], onDelete: SetNull)
+  patient     Patient           @relation(fields: [patientId], references: [id], onDelete: Restrict)
+  details     Details[]
+  invoice     Invoices?
+
+  @@index([doctorId, date, start_time])
+  @@index([patientId])
+  @@map("Appointment")
+}
+
+model Details {
+  id            Int         @id @default(autoincrement())
+  type          DetailsType
+  content       String
+  createdAt     DateTime    @default(now())
+  doctorId      Int
+  version       Int
+  appointmentId Int
+  doctor        Doctor      @relation(fields: [doctorId], references: [id], onDelete: Restrict)
+  appointment   Appointment @relation(fields: [appointmentId], references: [id], onDelete: Cascade)
+
+  @@index([appointmentId, createdAt])
+  @@map("Details")
+}
+
+model Invoices {
+  id            Int         @id @default(autoincrement())
+  appointmentId Int         @unique
+  total         Float
+  status        String
+  appointment   Appointment @relation(fields: [appointmentId], references: [id], onDelete: Cascade)
+  payments      Payment[]
+
+  @@map("Invoices")
+}
+
+model Payment {
+  id          Int      @id @default(autoincrement())
+  amount      Float
+  paymentDate DateTime
+  status      String
+  invoiceId   Int
+  invoice     Invoices @relation(fields: [invoiceId], references: [id], onDelete: Cascade)
+
+  @@index([invoiceId])
+  @@map("Payment")
+}
+
+enum appointmentStatus {
+  SCHEDULED
+  COMPLETED
+  CANCELED
+}
+
+enum userRole {
+  ADMIN
+  EMPLOYEE
+}
+
+enum DetailsType {
+  DIAGNOSIS
+  THERAPY
+  REPORT
+}
